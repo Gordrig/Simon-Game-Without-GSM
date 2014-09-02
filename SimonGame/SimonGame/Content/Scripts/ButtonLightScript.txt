@@ -1,0 +1,20 @@
+
+light_button = function()
+	GameObject.ColorA = GameObject.ColorA * 0.95
+	if GameObject.colorR > 0 then
+		GameObject.colorR = GameObject.colorR * 0.95
+	end
+	if GameObject.colorG > 0 then
+		GameObject.colorG = GameObject.colorG * 0.95
+	end
+	if GameObject.colorB > 0 then
+		GameObject.colorB = GameObject.colorB * 0.95
+	end
+
+	if GameObject.colorA <= 75 then
+		GameObject.buttonPressed = false
+	end
+end
+
+
+GameObject.ButtonPressedEvent:Add(light_button)
