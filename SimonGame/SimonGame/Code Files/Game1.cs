@@ -116,7 +116,7 @@ namespace SimonGame
 
             
 
-            buttonSoundEffect1 = Content.Load<SoundEffect>("Music/WAV/SimonGameSounds1");
+            //buttonSoundEffect1 = Content.Load<SoundEffect>("Music/WAV/SimonGameSounds1");
             //buttonSoundEffect2 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds2");
             //buttonSoundEffect3 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds3");
             //buttonSoundEffect4 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds4");
