@@ -121,8 +121,8 @@
     <Content Include="Content\Music\MP3\Simon_Game_Sounds4.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Music\WAV\Simon_Game_Sounds1.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Content\Music\WAV\SimonGameSounds1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Music\WAV\Simon_Game_Sounds2.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

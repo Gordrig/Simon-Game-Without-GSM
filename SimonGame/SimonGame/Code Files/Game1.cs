@@ -90,7 +90,7 @@ namespace SimonGame
             lights[2] = new ButtonLight(new Vector2(screen_width / 2 + 165, screen_height / 2 - 65), new Vector2(0.75f, 0.75f), Color.Blue, 0f, 2);
             lights[3] = new ButtonLight(new Vector2(screen_width / 2, screen_height / 2 + 90), new Vector2(0.75f, 0.75f), Color.Yellow, 0f, 3);
             
-            gameState = GameState.Menu;
+            gameState = GameState.Playing;
             
             base.Initialize();
         }
@@ -116,7 +116,7 @@ namespace SimonGame
 
             
 
-            //buttonSoundEffect1 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds1");
+            buttonSoundEffect1 = Content.Load<SoundEffect>("Music/WAV/SimonGameSounds1");
             //buttonSoundEffect2 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds2");
             //buttonSoundEffect3 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds3");
             //buttonSoundEffect4 = Content.Load<SoundEffect>("Music/WAV/Simon_Game_Sounds4");
