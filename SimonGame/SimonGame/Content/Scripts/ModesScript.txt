@@ -1,3 +1,4 @@
+module("modemod", package.seeall)
 
 -------------------------------------------------Some Initialization----------------
 
@@ -6,15 +7,21 @@ math.random(); math.random(); math.random();
 
 computer_input = {}
 player_input = {}
-round_number = 1
+Game.round_number = 1
 notes_played = 0
 Game.computer_turn = true
 random_num = -1
 delay_counter = 0
 
 
---------------------------------------------------Some Functions----------------
+-------------------------------------------------Some Properties---------------
 
+get_round = function() return Game.round_number end
+
+get_notes_played = function() return notes_played end
+
+
+--------------------------------------------------Some Functions----------------
 
 delay_time_for_func = function(length, do_something)
 	delay_counter = delay_counter + Game.delta_time
@@ -40,10 +47,10 @@ computer_selects_button = function()
 end
 
 check_round_completion = function(n)
-	if notes_played ~= round_number then ---if these value's aren't equal
+	if notes_played ~= Game.round_number then ---if these value's aren't equal
 		activate_button(n) -----------------more note's can be played
 	end
-	if notes_played == round_number then ---otherwise
+	if notes_played == Game.round_number then ---otherwise
 		delay_time_for_func(0, switch_turns)
 	end
 end
@@ -69,7 +76,7 @@ compare_inputs_of = function(computer, player)
 	if player[#player] == computer[#player] then
 		if #player == #computer then ------------------player has completed this round, set necessary data back to default
 			notes_played = 0 
-			round_number = round_number + 1
+			Game.round_number = Game.round_number + 1
 			for i, v in ipairs(computer_input) do computer_input[i]=nil	end --clear input tables for next round
 			for i, v in ipairs(player_input) do player_input[i]=nil end
 						-------------------------------perhaps award player some points
@@ -78,31 +85,10 @@ compare_inputs_of = function(computer, player)
 		end
 	elseif player[#player] ~= computer[#player] then --player has selected wrong button, set necessary data back to default
 		notes_played = 0 
-		round_number = 1
+		Game.round_number = 1
 		for i, v in ipairs(computer_input) do computer_input[i]=nil	end --clear input tables for next round
-			for i, v in ipairs(player_input) do player_input[i]=nil end
+		for i, v in ipairs(player_input) do player_input[i]=nil end
 		delay_time_for_func(0, switch_turns)
 		Game:GameOver()
 	end
 end
-
-
---------------------------------------------------Main Game Loop------------------
-compter_input_size = 0
-player_input_size = 0
-
-run_game_loop = function()
-	if Game.computer_turn then
-		delay_time_for_func(1, computer_selects_button)
-	elseif Game.player_turn then
-		check_player_input()
-	end
-
-	computer_input_size = #computer_input
-	player_input_size = #player_input
-end
-
-
--------------------------------------------------C# Event Handling---------------
-
-Game.EnterZenModeEvent:Add(run_game_loop)
