@@ -1,0 +1,32 @@
+require "modemod"
+
+-------------------------------------------------Some Initialization-------------
+
+local comp_speed = 0
+
+
+-------------------------------------------------Some functions------------------
+
+calc_comp_speed = function(rate, floor) ---------------rate should be between 0.1 and 0.6, floor should be greater than 0.36
+	comp_speed = 1.5 - modemod.get_round() * rate
+	if comp_speed < floor then
+		comp_speed = floor
+	end
+end
+
+
+--------------------------------------------------Main Game Loop------------------
+
+run_rush_loop = function()
+	if Game.computer_turn then
+		calc_comp_speed(0.2, 0.38)
+		modemod.delay_time_for_func(comp_speed, modemod.computer_selects_button)
+	elseif Game.player_turn then
+		modemod.check_player_input()
+	end
+end
+
+
+-------------------------------------------------C# Event Handling---------------
+
+Game.EnterRushModeEvent:Add(run_rush_loop)
