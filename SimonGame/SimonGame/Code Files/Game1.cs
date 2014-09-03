@@ -28,6 +28,8 @@ namespace SimonGame
 
         public delegate void EnterZenModeEventHandler();
         public event EventHandler EnterZenModeEvent;
+        public delegate void EnterRushModeEventHandler();
+        public event EventHandler EnterRushModeEvent;
         
         private static float screen_width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         private static float screen_height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -37,6 +39,7 @@ namespace SimonGame
         public bool computer_turn;
         public bool player_turn;
         public int player_input;
+        public int round_number;
 
         private enum GameState { Loading, Menu, Playing, Lose };
         private GameState gameState;
@@ -56,6 +59,9 @@ namespace SimonGame
         private SoundEffect buttonSoundEffect2;
         private SoundEffect buttonSoundEffect3;
         private SoundEffect buttonSoundEffect4;
+        
+        private SpriteFont scoreFont;
+        private SpriteFont turnFont;
 
         #region Properties
 
@@ -83,12 +89,13 @@ namespace SimonGame
 
             player_turn = false;
             player_input = -1; //some value that isnt one of the button values (0-3)
+            round_number = 0;
 
             lights = new ButtonLight[4];
-            lights[0] = new ButtonLight(new Vector2(screen_width / 2, screen_height / 2 - 230), new Vector2(0.75f, 0.75f), Color.Green, 0f, 0);
-            lights[1] = new ButtonLight(new Vector2(screen_width/2 - 165, screen_height/2 - 65), new Vector2(0.75f, 0.75f), Color.Red, 0f, 1);
-            lights[2] = new ButtonLight(new Vector2(screen_width / 2 + 165, screen_height / 2 - 65), new Vector2(0.75f, 0.75f), Color.Blue, 0f, 2);
-            lights[3] = new ButtonLight(new Vector2(screen_width / 2, screen_height / 2 + 90), new Vector2(0.75f, 0.75f), Color.Yellow, 0f, 3);
+            lights[0] = new ButtonLight(new Vector2(screen_width / 2, screen_height / 2 - 230), new Vector2(1f, 1f), Color.SpringGreen, 0f, 0);
+            lights[1] = new ButtonLight(new Vector2(screen_width / 2 - 165, screen_height / 2 - 65), new Vector2(1f, 1f), Color.Red, 0f, 1);
+            lights[2] = new ButtonLight(new Vector2(screen_width / 2 + 165, screen_height / 2 - 65), new Vector2(1f, 1f), Color.SkyBlue, 0f, 2);
+            lights[3] = new ButtonLight(new Vector2(screen_width / 2, screen_height / 2 + 90), new Vector2(1f, 1f), Color.Gold, 0f, 3);
             
             gameState = GameState.Playing;
             
@@ -107,7 +114,12 @@ namespace SimonGame
             for (int i = 0; i < lights.Length; i++)
                 lights[i].LoadContent(this.Content, "Images/buttonOverlay");
 
-            lua.DoFile(@"Content\Scripts\ZenModeScript.txt");
+            scoreFont = Content.Load<SpriteFont>("Fonts/ReconstructFont24");
+            turnFont = Content.Load<SpriteFont>("Fonts/ReconstructFont14");
+
+            lua.DoFile(@"Content\Scripts\ModesScript.txt");
+            lua.DoFile(@"Content\Scripts\ZenScript.txt");
+            lua.DoFile(@"Content\Scripts\RushScript.txt");
 
             homeBG = Content.Load<Texture2D>("Images/home_bg");
             homeCenterPiece = Content.Load<Texture2D>("Images/centerpiece");
@@ -173,6 +185,7 @@ namespace SimonGame
             switch (mode)
             {
                 case Mode.Zen: EnterZenModeEvent(this, null); break;
+                case Mode.Rush: EnterRushModeEvent(this, null); break;
             }
 
             //Debug.WriteLine("Lua round_number: " + lua["round_number"]);
@@ -202,6 +215,10 @@ namespace SimonGame
             if (Keyboard.GetState().IsKeyDown(Keys.X))
             {
                 mode = Mode.Zen;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.C))
+            {
+                mode = Mode.Rush;
             }
         }
 
@@ -331,13 +348,20 @@ namespace SimonGame
             spriteBatch.Draw(playing_bg, Vector2.Zero, Color.White);
             for (int i = 0; i < lights.Length; i++)
             {
-                if (lights[i].buttonPressed)
-                    lights[i].Draw(spriteBatch);
+                lights[i].Draw(spriteBatch);
             }
             if (computer_turn)
+            {
                 spriteBatch.Draw(turn_indicator, Vector2.Zero, Color.Red);
+                spriteBatch.DrawString(turnFont, "Please Wait...", new Vector2(40, 50), Color.Red);
+            }
             if (player_turn)
+            {
                 spriteBatch.Draw(turn_indicator, Vector2.Zero, Color.Green);
+                spriteBatch.DrawString(turnFont, "Go!!", new Vector2(100, 50), Color.LightGreen);
+            }
+           
+            spriteBatch.DrawString(scoreFont, ""+round_number, new Vector2(670, 85), Color.Yellow);
 
             spriteBatch.End();
         }
