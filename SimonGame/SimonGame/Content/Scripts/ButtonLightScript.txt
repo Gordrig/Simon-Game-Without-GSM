@@ -1,20 +1,20 @@
+local fade_rate = 0.96
 
 light_button = function()
-	GameObject.ColorA = GameObject.ColorA * 0.95
+	GameObject.ColorA = GameObject.ColorA * fade_rate
 	if GameObject.colorR > 0 then
-		GameObject.colorR = GameObject.colorR * 0.95
+		GameObject.colorR = GameObject.colorR * fade_rate
 	end
 	if GameObject.colorG > 0 then
-		GameObject.colorG = GameObject.colorG * 0.95
+		GameObject.colorG = GameObject.colorG * fade_rate
 	end
 	if GameObject.colorB > 0 then
-		GameObject.colorB = GameObject.colorB * 0.95
+		GameObject.colorB = GameObject.colorB * fade_rate
 	end
 
-	if GameObject.colorA <= 75 then
+	if GameObject.colorA <= 120 then
 		GameObject.buttonPressed = false
 	end
 end
-
 
 GameObject.ButtonPressedEvent:Add(light_button)
