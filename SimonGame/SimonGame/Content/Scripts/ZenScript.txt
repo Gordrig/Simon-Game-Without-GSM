@@ -1,0 +1,21 @@
+require "modemod"
+
+-------------------------------------------------Some Initialization-------------
+
+local comp_speed = 1.5
+
+
+--------------------------------------------------Main Game Loop------------------
+
+run_zen_loop = function()
+	if Game.computer_turn then
+		modemod.delay_time_for_func(comp_speed, modemod.computer_selects_button)
+	elseif Game.player_turn then
+		modemod.check_player_input()
+	end
+end
+
+
+-------------------------------------------------C# Event Handling---------------
+
+Game.EnterZenModeEvent:Add(run_zen_loop)
